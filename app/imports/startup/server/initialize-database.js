@@ -40,5 +40,7 @@ Meteor.startup(() => {
     _.each(collectionList, collection => {
       restoreCollection(collection, restoreJSON);
     });
+  } else {
+    console.log('already initialized');
   }
 });

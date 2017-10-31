@@ -74,3 +74,11 @@ FlowRouter.notFound = {
     BlazeLayout.render('Page_Not_Found');
   },
 };
+
+export const ayushPageRouteName = 'Ayush_Page';
+userRoutes.route('/ayush', {
+  name: ayushPageRouteName,
+  action() {
+    BlazeLayout.render('User_Layout', { main: ayushPageRouteName });
+  },
+});

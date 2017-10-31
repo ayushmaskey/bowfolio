@@ -8,16 +8,16 @@ import { Interests } from '/imports/api/interest/InterestCollection';
 const displaySuccessMessage = 'displaySuccessMessage';
 const displayErrorMessages = 'displayErrorMessages';
 
-Template.Profile_Page.onCreated(function onCreated() {
+Template.Ayush_Page.onCreated(function onCreated() {
   this.subscribe(Interests.getPublicationName());
   this.subscribe(Profiles.getPublicationName());
   this.messageFlags = new ReactiveDict();
   this.messageFlags.set(displaySuccessMessage, false);
   this.messageFlags.set(displayErrorMessages, false);
-  this.context = Profiles.getSchema().namedContext('Profile_Page');
+  this.context = Profiles.getSchema().namedContext('Ayush_Page');
 });
 
-Template.Profile_Page.helpers({
+Template.Ayush_Page.helpers({
   successClass() {
     return Template.instance().messageFlags.get(displaySuccessMessage) ? 'success' : '';
   },
@@ -34,13 +34,18 @@ Template.Profile_Page.helpers({
     const profile = Profiles.findDoc(FlowRouter.getParam('username'));
     const selectedInterests = profile.interests;
     return profile && _.map(Interests.findAll(),
-        function makeInterestObject(interest) {
-          return { label: interest.name, selected: _.contains(selectedInterests, interest.name) };
-        });
+            function makeInterestObject(interest) {
+              return { label: interest.name, selected: _.contains(selectedInterests, interest.name) };
+            });
+  },
+  test() {
+    // console.log(Profiles.assertDefined('contents'));
+    console.log(Interests.findDoc('Paddling'));
   },
 });
 
-Template.Profile_Page.events({
+
+Template.Ayush_Page.events({
   'submit .profile-data-form'(event, instance) {
     event.preventDefault();
     const firstName = event.target.First.value;
@@ -51,24 +56,12 @@ Template.Profile_Page.events({
     const github = event.target.Github.value;
     const facebook = event.target.Facebook.value;
     const instagram = event.target.Instagram.value;
-    const location = event.target.Location.value;
     const bio = event.target.Bio.value;
     const selectedInterests = _.filter(event.target.Interests.selectedOptions, (option) => option.selected);
     const interests = _.map(selectedInterests, (option) => option.value);
 
-    const updatedProfileData = {
-      firstName,
-      lastName,
-      title,
-      picture,
-      github,
-      facebook,
-      instagram,
-      bio,
-      location,
-      interests,
-      username,
-    };
+    const updatedProfileData = { firstName, lastName, title, picture, github, facebook, instagram, bio, interests,
+      username };
 
     // Clear out any old validation errors.
     instance.context.reset();
